@@ -11,7 +11,7 @@ const connection = mysql.createConnection({
     database: "employeeTracker_db",
     });
 
-    // Connect to the database 
+    // Connect to the database //
 connection.connect((err) => {
     if (err) throw err;
     console.log("Connected to the database!");
@@ -86,7 +86,7 @@ function viewAllDepartments() {
     connection.query(query, (err, res) => {
     if (err) throw err;
     console.table(res);
-    //Restart the application//
+    // Restart the application //
     start();
     });
     
@@ -103,7 +103,7 @@ function ViewAllRoles () {
     });
     }
 
-    // Function to view all the employees
+    // Function to view all the employees //
 function viewAllEmployees(){
     const query= `
     SELECT e.id, e.first_name,e.last_name, r.title, d.department_name, CONCAT(m.first_name, ' ', m.lastname) AS manager_name
@@ -122,7 +122,7 @@ function viewAllEmployees(){
     }
 
 
-// Function to add a department
+// Function to add a department //
 function addDepartment () {
     inquirer
     .prompt ({
@@ -135,12 +135,18 @@ function addDepartment () {
     const query= `INSERT INTO departments (department_name) VALUES ("${answer.name}")`;
     connection.query(query, (err, res) => {
     if (err) throw err;
-    console.lof (`Added department ${answer.name} to the database!`);
+    console.log (`Added department ${answer.name} to the database!`);
     
-    //Restart the application
+    // Restart the application //
     start();
     console.log(answer.name);
     });
         });
     
     }
+
+
+// Close the connection when the application exists //
+process.on("exit",() => {
+	connection.end();
+});
